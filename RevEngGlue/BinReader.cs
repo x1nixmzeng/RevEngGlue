@@ -17,6 +17,13 @@ namespace RevEngGlue
             StrReader = new PLStringReader(this);
         }
 
+        public BinReader(string filename, Encoding string_enc)
+            : base(filename)
+        {
+            StrReader = new PLStringReader(this);
+            Encoding = string_enc;
+        }
+
         public Encoding Encoding
         {
             get

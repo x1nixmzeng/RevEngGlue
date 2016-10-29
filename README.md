@@ -1,6 +1,6 @@
 # RevEngGlue
 
-Glue library written in C# to allow aid porting file format documentation into standalone tools.
+Glue library to aid porting file format documentation into standalone C# tools.
 
 Most of my file formats are reverse-engineered as Binary Templates (with [010 Editor][0]) so this library will aim to mimic these features. It also contains a version of [prelen.bt][1] to handle how strings are commonly stored in video game formats.
 

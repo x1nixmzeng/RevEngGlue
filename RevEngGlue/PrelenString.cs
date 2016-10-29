@@ -23,7 +23,7 @@ namespace RevEngGlue
                 Encoding = Encoding.Default;
             }
 
-            public string Read(PrelenStringParams p)
+            private string Read(PrelenStringParams p)
             {
                 var raw = new List<byte>();
 
@@ -40,15 +40,15 @@ namespace RevEngGlue
                             }
                             else
                             {
-                                if( p.length == Length.lFixed )
+                                uint len = 0;
+
+                                if (p.length == Length.lFixed)
                                 {
-                                    //raw = br.chunk8(p.read).ToList();
+                                    len = (uint)p.read;
                                 }
                                 else
                                 {
-                                    uint len = 0;
-
-                                    switch(p.length)
+                                    switch (p.length)
                                     {
                                         case Length.l8:
                                             {
@@ -66,15 +66,29 @@ namespace RevEngGlue
                                                 break;
                                             }
                                     }
-
-                                    raw = br.u8((int)len).ToList();
                                 }
+
+                                raw = br.u8((int)len).ToList();
                             }
                         }
                         break;
                 }
 
                 return Encoding.GetString(raw.ToArray());
+            }
+
+            public int StringLength(PrelenStringParams p, string source_string)
+            {
+                int len = Encoding.GetByteCount(source_string);
+
+                if (p.length == Length.lNul)
+                {
+                    len += 1;
+                }
+
+                // TODO: alignment
+
+                return len;
             }
 
             public string cstr()

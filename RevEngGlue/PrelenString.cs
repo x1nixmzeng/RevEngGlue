@@ -29,13 +29,27 @@ namespace RevEngGlue
                 Encoding = enc;
             }
 
-            private StringMeta GetMeta(List<byte> source)
+            private StringMeta GetMeta(PrelenStringParams p, List<byte> source)
             {
                 StringMeta meta;
 
                 meta.String = Encoding.GetString(source.ToArray());
-                meta.StringSize = source.Count;
                 meta.StringLength = meta.String.Length;
+
+                meta.StringSize = source.Count;
+
+                if( p.length == Length.lNul )
+                {
+                    switch(p.size)
+                    {
+                        case Size.s8:
+                            meta.StringSize += sizeof(byte);
+                            break;
+                        case Size.s16:
+                            meta.StringSize += sizeof(short);
+                            break;
+                    }
+                }
 
                 return meta;
             }
@@ -91,7 +105,7 @@ namespace RevEngGlue
                         break;
                 }
 
-                return GetMeta(raw);
+                return GetMeta(p, raw);
             }
 
             public int StringLength(PrelenStringParams p, string source_string)

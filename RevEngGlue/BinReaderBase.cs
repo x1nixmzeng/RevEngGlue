@@ -43,9 +43,29 @@ namespace RevEngGlue
             return br.ReadSByte();
         }
 
+        public sbyte[] i8(int count)
+        {
+            var tmp = new List<sbyte>(count);
+            for (int i = 0; i < count; ++i)
+            {
+                tmp[i] = i8();
+            }
+            return tmp.ToArray();
+        }
+
         public short i16()
         {
             return br.ReadInt16();
+        }
+
+        public short[] i16(int count)
+        {
+            var tmp = new List<short>(count);
+            for (int i = 0; i < count; ++i)
+            {
+                tmp[i] = i16();
+            }
+            return tmp.ToArray();
         }
 
         public int i32()
@@ -53,9 +73,29 @@ namespace RevEngGlue
             return br.ReadInt32();
         }
 
+        public int[] i32(int count)
+        {
+            var tmp = new List<int>(count);
+            for (int i = 0; i < count; ++i)
+            {
+                tmp[i] = i32();
+            }
+            return tmp.ToArray();
+        }
+
         public long i64()
         {
             return br.ReadInt64();
+        }
+
+        public long[] i64(int count)
+        {
+            var tmp = new List<long>(count);
+            for (int i = 0; i < count; ++i)
+            {
+                tmp[i] = i64();
+            }
+            return tmp.ToArray();
         }
 
         // Unsigned integers
@@ -65,9 +105,29 @@ namespace RevEngGlue
             return br.ReadByte();
         }
 
+        public byte[] u8(int count)
+        {
+            var tmp = new List<byte>(count);
+            for (int i = 0; i < count; ++i)
+            {
+                tmp[i] = u8();
+            }
+            return tmp.ToArray();
+        }
+
         public ushort u16()
         {
             return br.ReadUInt16();
+        }
+
+        public ushort[] u16(int count)
+        {
+            var tmp = new List<ushort>(count);
+            for (int i = 0; i < count; ++i)
+            {
+                tmp[i] = u16();
+            }
+            return tmp.ToArray();
         }
 
         public uint u32()
@@ -75,9 +135,29 @@ namespace RevEngGlue
             return br.ReadUInt32();
         }
 
+        public uint[] u32(int count)
+        {
+            var tmp = new List<uint>(count);
+            for (int i = 0; i < count; ++i)
+            {
+                tmp[i] = u32();
+            }
+            return tmp.ToArray();
+        }
+
         public ulong u64()
         {
             return br.ReadUInt64();
+        }
+
+        public ulong[] u64(int count)
+        {
+            var tmp = new List<ulong>(count);
+            for (int i = 0; i < count; ++i)
+            {
+                tmp[i] = u64();
+            }
+            return tmp.ToArray();
         }
 
         // Floats
@@ -87,32 +167,28 @@ namespace RevEngGlue
             return br.ReadSingle();
         }
 
+        public float[] f32(int count)
+        {
+            var tmp = new List<float>(count);
+            for (int i = 0; i < count; ++i)
+            {
+                tmp[i] = f32();
+            }
+            return tmp.ToArray();
+        }
+
         public double f64()
         {
             return br.ReadDouble();
         }
 
-        // Chunks
-
-        public byte[] block(int length)
+        public double[] f64(int count)
         {
-            return br.ReadBytes(length);
-        }
-
-        public byte[] chunk8(int length)
-        {
-            return br.ReadBytes(length);
-        }
-
-        public ushort[] chunk16(int length)
-        {
-            var tmp = new List<UInt16>();
-            
-            for(int i =0; i < length; ++i)
+            var tmp = new List<double>(count);
+            for (int i = 0; i < count; ++i)
             {
-                tmp.Add(br.ReadUInt16());
+                tmp[i] = f64();
             }
-
             return tmp.ToArray();
         }
     }

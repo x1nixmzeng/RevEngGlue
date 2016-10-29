@@ -67,7 +67,7 @@ namespace RevEngGlue
                                             }
                                     }
 
-                                    raw = br.block((int)len).ToList();
+                                    raw = br.u8((int)len).ToList();
                                 }
                             }
                         }

@@ -24,6 +24,12 @@ namespace RevEngGlue
             StrReader = new PLStringReader(this, string_enc);
         }
 
+        public BinReader(MemoryStream ms, Encoding string_enc)
+            : base(ms)
+        {
+            StrReader = new PLStringReader(this, string_enc);
+        }
+
         public StringMeta cstr() { return StrReader.cstr(); }
         public StringMeta wcstr() { return StrReader.wcstr(); }
         public StringMeta str(int length) { return StrReader.str(length); }

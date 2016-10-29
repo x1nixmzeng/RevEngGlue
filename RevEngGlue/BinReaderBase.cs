@@ -10,10 +10,23 @@ namespace RevEngGlue
     public class BinReaderBase : ISignedReads, IUnsignedReads, IRealReads
     {
         BinaryReader br;
-        
+
         public BinReaderBase(string filename)
         {
             br = new BinaryReader(File.OpenRead(filename));
+        }
+
+        ~BinReaderBase()
+        {
+            br.BaseStream.Close();
+        }
+
+        public bool Opened
+        {
+            get
+            {
+                return br.BaseStream.CanRead;
+            }
         }
 
         public int FileSize
@@ -35,7 +48,7 @@ namespace RevEngGlue
                 br.BaseStream.Position = (long)value;
             }
         }
-        
+
         // Signed integers
 
         public sbyte i8()
@@ -48,7 +61,7 @@ namespace RevEngGlue
             var tmp = new List<sbyte>(count);
             for (int i = 0; i < count; ++i)
             {
-                tmp[i] = i8();
+                tmp.Add(i8());
             }
             return tmp.ToArray();
         }
@@ -63,7 +76,7 @@ namespace RevEngGlue
             var tmp = new List<short>(count);
             for (int i = 0; i < count; ++i)
             {
-                tmp[i] = i16();
+                tmp.Add(i16());
             }
             return tmp.ToArray();
         }
@@ -78,7 +91,7 @@ namespace RevEngGlue
             var tmp = new List<int>(count);
             for (int i = 0; i < count; ++i)
             {
-                tmp[i] = i32();
+                tmp.Add(i32());
             }
             return tmp.ToArray();
         }
@@ -93,7 +106,7 @@ namespace RevEngGlue
             var tmp = new List<long>(count);
             for (int i = 0; i < count; ++i)
             {
-                tmp[i] = i64();
+                tmp.Add(i64());
             }
             return tmp.ToArray();
         }
@@ -110,7 +123,7 @@ namespace RevEngGlue
             var tmp = new List<byte>(count);
             for (int i = 0; i < count; ++i)
             {
-                tmp[i] = u8();
+                tmp.Add(u8());
             }
             return tmp.ToArray();
         }
@@ -125,7 +138,7 @@ namespace RevEngGlue
             var tmp = new List<ushort>(count);
             for (int i = 0; i < count; ++i)
             {
-                tmp[i] = u16();
+                tmp.Add(u16());
             }
             return tmp.ToArray();
         }
@@ -140,7 +153,7 @@ namespace RevEngGlue
             var tmp = new List<uint>(count);
             for (int i = 0; i < count; ++i)
             {
-                tmp[i] = u32();
+                tmp.Add(u32());
             }
             return tmp.ToArray();
         }
@@ -155,7 +168,7 @@ namespace RevEngGlue
             var tmp = new List<ulong>(count);
             for (int i = 0; i < count; ++i)
             {
-                tmp[i] = u64();
+                tmp.Add(u64());
             }
             return tmp.ToArray();
         }
@@ -172,7 +185,7 @@ namespace RevEngGlue
             var tmp = new List<float>(count);
             for (int i = 0; i < count; ++i)
             {
-                tmp[i] = f32();
+                tmp.Add(f32());
             }
             return tmp.ToArray();
         }
@@ -187,7 +200,7 @@ namespace RevEngGlue
             var tmp = new List<double>(count);
             for (int i = 0; i < count; ++i)
             {
-                tmp[i] = f64();
+                tmp.Add(f64());
             }
             return tmp.ToArray();
         }

@@ -11,7 +11,7 @@ namespace RevEngGlue
         // roughly base on 'prelen.bt' binary template
         // see here: https://gist.github.com/x1nixmzeng/3805536
 
-        public class PLStringReader : IPLStringReaderBase
+        public class PLStringReader : IPLStringReader
         {
             BinReaderBase br;
 

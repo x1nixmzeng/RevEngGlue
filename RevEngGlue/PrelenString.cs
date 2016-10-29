@@ -23,6 +23,12 @@ namespace RevEngGlue
                 Encoding = Encoding.Default;
             }
 
+            public PLStringReader(BinReaderBase reader, Encoding enc)
+            {
+                br = reader;
+                Encoding = enc;
+            }
+
             private StringMeta GetMeta(List<byte> source)
             {
                 StringMeta meta;

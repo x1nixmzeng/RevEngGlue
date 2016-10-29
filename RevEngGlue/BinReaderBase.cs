@@ -9,23 +9,25 @@ namespace RevEngGlue
 {
     public class BinReaderBase : ISignedReads, IUnsignedReads, IRealReads
     {
-        BinaryReader br;
+        Stream br;
+        byte[] swap;
 
-        public BinReaderBase(string filename)
+        public BinReaderBase(Stream source)
         {
-            br = new BinaryReader(File.OpenRead(filename));
+            br = source;
+            swap = new byte[10];
         }
 
         ~BinReaderBase()
         {
-            br.BaseStream.Close();
+            br.Close();
         }
 
         public bool Opened
         {
             get
             {
-                return br.BaseStream.CanRead;
+                return br.CanRead;
             }
         }
 
@@ -33,7 +35,7 @@ namespace RevEngGlue
         {
             get
             {
-                return (int)br.BaseStream.Length;
+                return (int)br.Length;
             }
         }
 
@@ -41,11 +43,19 @@ namespace RevEngGlue
         {
             get
             {
-                return (int)br.BaseStream.Position;
+                return (int)br.Position;
             }
             set
             {
-                br.BaseStream.Position = (long)value;
+                br.Position = (long)value;
+            }
+        }
+
+        public bool Eof
+        {
+            get
+            {
+                return Position == FileSize;
             }
         }
 
@@ -53,7 +63,8 @@ namespace RevEngGlue
 
         public sbyte i8()
         {
-            return br.ReadSByte();
+            br.Read(swap, 0, sizeof(sbyte));
+            return (sbyte)swap[0];
         }
 
         public sbyte[] i8(int count)
@@ -68,7 +79,9 @@ namespace RevEngGlue
 
         public short i16()
         {
-            return br.ReadInt16();
+            br.Read(swap, 0, sizeof(short));
+
+            return BitConverter.ToInt16(swap, 0);
         }
 
         public short[] i16(int count)
@@ -83,7 +96,9 @@ namespace RevEngGlue
 
         public int i32()
         {
-            return br.ReadInt32();
+            br.Read(swap, 0, sizeof(int));
+
+            return BitConverter.ToInt32(swap, 0);
         }
 
         public int[] i32(int count)
@@ -98,7 +113,9 @@ namespace RevEngGlue
 
         public long i64()
         {
-            return br.ReadInt64();
+            br.Read(swap, 0, sizeof(long));
+
+            return BitConverter.ToInt64(swap, 0);
         }
 
         public long[] i64(int count)
@@ -115,7 +132,8 @@ namespace RevEngGlue
 
         public byte u8()
         {
-            return br.ReadByte();
+            br.Read(swap, 0, sizeof(byte));
+            return swap[0];
         }
 
         public byte[] u8(int count)
@@ -130,7 +148,9 @@ namespace RevEngGlue
 
         public ushort u16()
         {
-            return br.ReadUInt16();
+            br.Read(swap, 0, sizeof(ushort));
+
+            return BitConverter.ToUInt16(swap, 0);
         }
 
         public ushort[] u16(int count)
@@ -145,7 +165,9 @@ namespace RevEngGlue
 
         public uint u32()
         {
-            return br.ReadUInt32();
+            br.Read(swap, 0, sizeof(uint));
+
+            return BitConverter.ToUInt32(swap, 0);
         }
 
         public uint[] u32(int count)
@@ -160,7 +182,9 @@ namespace RevEngGlue
 
         public ulong u64()
         {
-            return br.ReadUInt64();
+            br.Read(swap, 0, sizeof(ulong));
+
+            return BitConverter.ToUInt64(swap, 0);
         }
 
         public ulong[] u64(int count)
@@ -177,7 +201,9 @@ namespace RevEngGlue
 
         public float f32()
         {
-            return br.ReadSingle();
+            br.Read(swap, 0, sizeof(float));
+
+            return BitConverter.ToSingle(swap, 0);
         }
 
         public float[] f32(int count)
@@ -192,7 +218,9 @@ namespace RevEngGlue
 
         public double f64()
         {
-            return br.ReadDouble();
+            br.Read(swap, 0, sizeof(double));
+
+            return BitConverter.ToDouble(swap, 0);
         }
 
         public double[] f64(int count)

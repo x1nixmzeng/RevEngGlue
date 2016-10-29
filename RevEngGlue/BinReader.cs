@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 using RevEngGlue.PrelenString;
 
 namespace RevEngGlue
@@ -12,29 +13,15 @@ namespace RevEngGlue
         PLStringReader StrReader;
 
         public BinReader(string filename)
-            : base(filename)
+            : base(File.OpenRead(filename))
         {
             StrReader = new PLStringReader(this);
         }
 
         public BinReader(string filename, Encoding string_enc)
-            : base(filename)
+            : base(File.OpenRead(filename))
         {
-            StrReader = new PLStringReader(this);
-            Encoding = string_enc;
-        }
-
-        public Encoding Encoding
-        {
-            get
-            {
-                return StrReader.Encoding;
-            }
-
-            set
-            {
-                StrReader.Encoding = value;
-            }
+            StrReader = new PLStringReader(this, string_enc);
         }
 
         public StringMeta cstr() { return StrReader.cstr(); }

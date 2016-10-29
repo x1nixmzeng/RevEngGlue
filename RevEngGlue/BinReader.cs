@@ -37,9 +37,14 @@ namespace RevEngGlue
             }
         }
 
-        public string cstr() { return StrReader.cstr(); }
-        public string wcstr() { return StrReader.wcstr(); }
-        public string str(int length) { return StrReader.str(length); }
-        public string wstr(int length) { return StrReader.wstr(length); }
+        public string cstr(out StringMeta meta)
+        {
+            meta = StrReader.cstr();
+            return meta.String;
+        }
+        public string cstr() { return StrReader.cstr().String; }
+        public string wcstr() { return StrReader.wcstr().String; }
+        public string str(int length) { return StrReader.str(length).String; }
+        public string wstr(int length) { return StrReader.wstr(length).String; }
     }
 }

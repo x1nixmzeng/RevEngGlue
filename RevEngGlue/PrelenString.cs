@@ -11,7 +11,7 @@ namespace RevEngGlue
         // roughly base on 'prelen.bt' binary template
         // see here: https://gist.github.com/x1nixmzeng/3805536
 
-        public class PLStringReader : IPLStringReader
+        public class PLStringReader : IPLStringReaderBase
         {
             BinReaderBase br;
 
@@ -23,7 +23,18 @@ namespace RevEngGlue
                 Encoding = Encoding.Default;
             }
 
-            private string Read(PrelenStringParams p)
+            private StringMeta GetMeta(List<byte> source)
+            {
+                StringMeta meta;
+
+                meta.String = Encoding.GetString(source.ToArray());
+                meta.StringSize = source.Count;
+                meta.StringLength = meta.String.Length;
+
+                return meta;
+            }
+
+            private StringMeta Read(PrelenStringParams p)
             {
                 var raw = new List<byte>();
 
@@ -74,7 +85,7 @@ namespace RevEngGlue
                         break;
                 }
 
-                return Encoding.GetString(raw.ToArray());
+                return GetMeta(raw);
             }
 
             public int StringLength(PrelenStringParams p, string source_string)
@@ -91,22 +102,22 @@ namespace RevEngGlue
                 return len;
             }
 
-            public string cstr()
+            public StringMeta cstr()
             {
                 return Read(new PrelenStringParams(PrelenString.Size.s8, PrelenString.Length.lNul));
             }
 
-            public string wcstr()
+            public StringMeta wcstr()
             {
                 return Read(new PrelenStringParams(PrelenString.Size.s16, PrelenString.Length.lNul));
             }
 
-            public string str(int length)
+            public StringMeta str(int length)
             {
                 return Read(new PrelenStringParams(PrelenString.Size.s8, length));
             }
 
-            public string wstr(int length)
+            public StringMeta wstr(int length)
             {
                 return Read(new PrelenStringParams(PrelenString.Size.s16, length));
             }

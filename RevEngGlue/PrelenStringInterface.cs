@@ -10,8 +10,6 @@ namespace RevEngGlue
     {
         interface IPLStringReader
         {
-            Encoding Encoding { get; set; }
-
             string cstr();
             string wcstr();
 

@@ -102,12 +102,12 @@ namespace RevEngGlue
 
         public sbyte[] i8(int count)
         {
-            var tmp = new List<sbyte>(count);
+            var tmp = new sbyte[count];
             for (int i = 0; i < count; ++i)
             {
-                tmp.Add(i8());
+                tmp[i] = i8();
             }
-            return tmp.ToArray();
+            return tmp;
         }
 
         public short i16()
@@ -119,12 +119,12 @@ namespace RevEngGlue
 
         public short[] i16(int count)
         {
-            var tmp = new List<short>(count);
+            var tmp = new short[count];
             for (int i = 0; i < count; ++i)
             {
-                tmp.Add(i16());
+                tmp[i] = i16();
             }
-            return tmp.ToArray();
+            return tmp;
         }
 
         public int i32()
@@ -136,12 +136,12 @@ namespace RevEngGlue
 
         public int[] i32(int count)
         {
-            var tmp = new List<int>(count);
+            var tmp = new int[count];
             for (int i = 0; i < count; ++i)
             {
-                tmp.Add(i32());
+                tmp[i] = i32();
             }
-            return tmp.ToArray();
+            return tmp;
         }
 
         public long i64()
@@ -153,12 +153,12 @@ namespace RevEngGlue
 
         public long[] i64(int count)
         {
-            var tmp = new List<long>(count);
+            var tmp = new long[count];
             for (int i = 0; i < count; ++i)
             {
-                tmp.Add(i64());
+                tmp[i] = i64();
             }
-            return tmp.ToArray();
+            return tmp;
         }
 
         // Unsigned integers
@@ -171,12 +171,11 @@ namespace RevEngGlue
 
         public byte[] u8(int count)
         {
-            var tmp = new List<byte>(count);
-            for (int i = 0; i < count; ++i)
-            {
-                tmp.Add(u8());
-            }
-            return tmp.ToArray();
+            var tmp = new byte[count];
+
+            br.Read(tmp, 0, count);
+            
+            return tmp;
         }
 
         public ushort u16()
@@ -188,12 +187,12 @@ namespace RevEngGlue
 
         public ushort[] u16(int count)
         {
-            var tmp = new List<ushort>(count);
+            var tmp = new ushort[count];
             for (int i = 0; i < count; ++i)
             {
-                tmp.Add(u16());
+                tmp[i] = u16();
             }
-            return tmp.ToArray();
+            return tmp;
         }
 
         public uint u32()
@@ -205,12 +204,12 @@ namespace RevEngGlue
 
         public uint[] u32(int count)
         {
-            var tmp = new List<uint>(count);
+            var tmp = new uint[count];
             for (int i = 0; i < count; ++i)
             {
-                tmp.Add(u32());
+                tmp[i] = u32();
             }
-            return tmp.ToArray();
+            return tmp;
         }
 
         public ulong u64()
@@ -222,12 +221,12 @@ namespace RevEngGlue
 
         public ulong[] u64(int count)
         {
-            var tmp = new List<ulong>(count);
+            var tmp = new ulong[count];
             for (int i = 0; i < count; ++i)
             {
-                tmp.Add(u64());
+                tmp[i] = u64();
             }
-            return tmp.ToArray();
+            return tmp;
         }
 
         // Floats
@@ -241,12 +240,12 @@ namespace RevEngGlue
 
         public float[] f32(int count)
         {
-            var tmp = new List<float>(count);
+            var tmp = new float[count];
             for (int i = 0; i < count; ++i)
             {
-                tmp.Add(f32());
+                tmp[i] = f32();
             }
-            return tmp.ToArray();
+            return tmp;
         }
 
         public double f64()
@@ -258,12 +257,16 @@ namespace RevEngGlue
 
         public double[] f64(int count)
         {
-            var tmp = new List<double>(count);
+            var tmp = new double[count];
+            tmp[0] = 0.0;
+
+
+            //var tmp = new double[count];
             for (int i = 0; i < count; ++i)
             {
-                tmp.Add(f64());
+                tmp[i] = f64();
             }
-            return tmp.ToArray();
+            return tmp;
         }
     }
 }

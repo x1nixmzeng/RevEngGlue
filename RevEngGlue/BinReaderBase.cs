@@ -258,10 +258,6 @@ namespace RevEngGlue
         public double[] f64(int count)
         {
             var tmp = new double[count];
-            tmp[0] = 0.0;
-
-
-            //var tmp = new double[count];
             for (int i = 0; i < count; ++i)
             {
                 tmp[i] = f64();

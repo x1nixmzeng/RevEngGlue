@@ -30,6 +30,12 @@ namespace RevEngGlue
             StrReader = new PLStringReader(this, string_enc);
         }
 
+        public Encoding StringEncoding
+        {
+            get { return StrReader.Encoding; }
+            set { StrReader.Encoding = value; }
+        }
+
         public StringMeta cstr() { return StrReader.cstr(); }
         public StringMeta wcstr() { return StrReader.wcstr(); }
         public StringMeta str(int length) { return StrReader.str(length); }

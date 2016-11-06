@@ -38,9 +38,10 @@ namespace RevEngGlue
 
                 meta.StringSize = source.Count;
 
-                if( p.length == Length.lNul )
+                // Add nul-terminator size to read string size
+                if (p.length == Length.lNul)
                 {
-                    switch(p.size)
+                    switch (p.size)
                     {
                         case Size.s8:
                             meta.StringSize += sizeof(byte);
@@ -100,6 +101,54 @@ namespace RevEngGlue
                                 }
 
                                 raw = br.u8((int)len).ToList();
+                            }
+                        }
+                        break;
+
+                    case Size.s16:
+                        {
+                            if (p.length == Length.lNul)
+                            {
+                                for (ushort val = br.u16(); val != 0; val = br.u16())
+                                {
+                                    var b = BitConverter.GetBytes(val);
+
+                                    raw.Add(b[0]);
+                                    raw.Add(b[1]);
+                                }
+                            }
+                            else
+                            {
+                                uint len = 0;
+
+                                if (p.length == Length.lFixed)
+                                {
+                                    len = (uint)p.read;
+                                }
+                                else
+                                {
+                                    switch (p.length)
+                                    {
+                                        case Length.l8:
+                                            {
+                                                len = br.u8();
+                                                break;
+                                            }
+                                        case Length.l16:
+                                            {
+                                                len = br.u16();
+                                                break;
+                                            }
+                                        case Length.l32:
+                                            {
+                                                len = br.u32();
+                                                break;
+                                            }
+                                    }
+                                }
+
+                                // 2 == sizeof(wchar_t)
+                                raw = br.u8((int)len * 2).ToList();
                             }
                         }
                         break;

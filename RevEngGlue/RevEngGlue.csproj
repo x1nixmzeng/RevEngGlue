@@ -47,11 +47,15 @@
     <Compile Include="BinReaderBase.cs" />
     <Compile Include="BinWriter.cs" />
     <Compile Include="CharSet.cs" />
+    <Compile Include="Checksum.cs" />
+    <Compile Include="ChecksumImpl.cs" />
+    <Compile Include="External\Crc32.cs" />
     <Compile Include="PrelenStringInterface.cs" />
     <Compile Include="PrelenStringParams.cs" />
     <Compile Include="PrelenString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

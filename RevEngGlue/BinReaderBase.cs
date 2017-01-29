@@ -87,6 +87,7 @@ namespace RevEngGlue
         private void ReadInternal(int num)
         {
             br.Read(swap, 0, num);
+            available_bits = 0;
 
             if ((num > 1) && big_endian)
             {

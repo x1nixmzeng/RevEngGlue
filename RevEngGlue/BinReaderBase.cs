@@ -33,6 +33,9 @@ namespace RevEngGlue
             br.Close();
         }
 
+        /// <summary>
+        /// Check that the file has been opened and can be read
+        /// </summary>
         public bool Opened
         {
             get
@@ -41,6 +44,9 @@ namespace RevEngGlue
             }
         }
 
+        /// <summary>
+        /// Get the size of the file
+        /// </summary>
         public int FileSize
         {
             get
@@ -49,6 +55,9 @@ namespace RevEngGlue
             }
         }
 
+        /// <summary>
+        /// Get the offset the file is being read from
+        /// </summary>
         public int Position
         {
             get
@@ -61,6 +70,9 @@ namespace RevEngGlue
             }
         }
 
+        /// <summary>
+        /// Check that there is no more data to be read
+        /// </summary>
         public bool Eof
         {
             get
@@ -69,6 +81,9 @@ namespace RevEngGlue
             }
         }
 
+        /// <summary>
+        /// Property which defines the order of bytes for how integers are interpreted
+        /// </summary>
         public BinBaseEndian Endian
         {
             get
@@ -82,8 +97,9 @@ namespace RevEngGlue
             }
         }
 
-        // Private helpers
-
+        /// <summary>
+        /// #private Read a number of bytes into the internal swap cache, handling endian
+        /// </summary>
         private void ReadInternal(int num)
         {
             br.Read(swap, 0, num);
@@ -95,6 +111,9 @@ namespace RevEngGlue
             }
         }
 
+        /// <summary>
+        /// #private Read a number of bits, if required
+        /// </summary>
         private void ReadInternalBits(int num)
         {
             if (available_bits == 0)
@@ -104,14 +123,18 @@ namespace RevEngGlue
             }
         }
 
-        // Signed integers
-
+        /// <summary>
+        /// Read an signed 8-bit integer from the next byte of data
+        /// </summary>
         public sbyte i8()
         {
             ReadInternal(sizeof(sbyte));
             return (sbyte)swap[0];
         }
 
+        /// <summary>
+        /// Read an array of signed 8-bit integer values
+        /// </summary>
         public sbyte[] i8(int count)
         {
             var tmp = new sbyte[count];
@@ -122,6 +145,9 @@ namespace RevEngGlue
             return tmp;
         }
 
+        /// <summary>
+        /// Read an signed 16-bit integer from the next 2 bytes of data
+        /// </summary>
         public short i16()
         {
             ReadInternal(sizeof(short));
@@ -129,6 +155,9 @@ namespace RevEngGlue
             return BitConverter.ToInt16(swap, 0);
         }
 
+        /// <summary>
+        /// Read an array of signed 16-bit integer values
+        /// </summary>
         public short[] i16(int count)
         {
             var tmp = new short[count];
@@ -139,6 +168,9 @@ namespace RevEngGlue
             return tmp;
         }
 
+        /// <summary>
+        /// Read an signed 32-bit integer from the next 4 bytes of data
+        /// </summary>
         public int i32()
         {
             ReadInternal(sizeof(int));
@@ -146,6 +178,9 @@ namespace RevEngGlue
             return BitConverter.ToInt32(swap, 0);
         }
 
+        /// <summary>
+        /// Read an array of signed 32-bit integer values
+        /// </summary>
         public int[] i32(int count)
         {
             var tmp = new int[count];
@@ -156,6 +191,9 @@ namespace RevEngGlue
             return tmp;
         }
 
+        /// <summary>
+        /// Read an signed 64-bit integer from the next 8 bytes of data
+        /// </summary>
         public long i64()
         {
             ReadInternal(sizeof(long));
@@ -163,6 +201,9 @@ namespace RevEngGlue
             return BitConverter.ToInt64(swap, 0);
         }
 
+        /// <summary>
+        /// Read an array of signed 64-bit integer values
+        /// </summary>
         public long[] i64(int count)
         {
             var tmp = new long[count];
@@ -173,14 +214,18 @@ namespace RevEngGlue
             return tmp;
         }
 
-        // Unsigned integers
-
+        /// <summary>
+        /// Read an unsigned 8-bit integer from the next byte of data
+        /// </summary>
         public byte u8()
         {
             ReadInternal(sizeof(byte));
             return swap[0];
         }
 
+        /// <summary>
+        /// Read an array of unsigned 8-bit integer values
+        /// </summary>
         public byte[] u8(int count)
         {
             var tmp = new byte[count];
@@ -190,6 +235,9 @@ namespace RevEngGlue
             return tmp;
         }
 
+        /// <summary>
+        /// Read an unsigned 16-bit integer from the next 2 bytes of data
+        /// </summary>
         public ushort u16()
         {
             ReadInternal(sizeof(ushort));
@@ -197,6 +245,9 @@ namespace RevEngGlue
             return BitConverter.ToUInt16(swap, 0);
         }
 
+        /// <summary>
+        /// Read an array of unsigned 16-bit integer values
+        /// </summary>
         public ushort[] u16(int count)
         {
             var tmp = new ushort[count];
@@ -207,6 +258,9 @@ namespace RevEngGlue
             return tmp;
         }
 
+        /// <summary>
+        /// Read an unsigned 32-bit integer from the next 4 bytes of data
+        /// </summary>
         public uint u32()
         {
             ReadInternal(sizeof(uint));
@@ -214,6 +268,9 @@ namespace RevEngGlue
             return BitConverter.ToUInt32(swap, 0);
         }
 
+        /// <summary>
+        /// Read an array of unsigned 32-bit integer values
+        /// </summary>
         public uint[] u32(int count)
         {
             var tmp = new uint[count];
@@ -224,6 +281,9 @@ namespace RevEngGlue
             return tmp;
         }
 
+        /// <summary>
+        /// Read an unsigned 64-bit integer from the next 8 bytes of data
+        /// </summary>
         public ulong u64()
         {
             ReadInternal(sizeof(ulong));
@@ -231,6 +291,9 @@ namespace RevEngGlue
             return BitConverter.ToUInt64(swap, 0);
         }
 
+        /// <summary>
+        /// Read an array of unsigned 64-bit integer values
+        /// </summary>
         public ulong[] u64(int count)
         {
             var tmp = new ulong[count];
@@ -241,8 +304,9 @@ namespace RevEngGlue
             return tmp;
         }
 
-        // Floats
-
+        /// <summary>
+        /// Read a float from the next 4 bytes of data
+        /// </summary>
         public float f32()
         {
             ReadInternal(sizeof(float));
@@ -250,6 +314,9 @@ namespace RevEngGlue
             return BitConverter.ToSingle(swap, 0);
         }
 
+        /// <summary>
+        /// Read an array of float values
+        /// </summary>
         public float[] f32(int count)
         {
             var tmp = new float[count];
@@ -260,6 +327,9 @@ namespace RevEngGlue
             return tmp;
         }
 
+        /// <summary>
+        /// Read a double from the next 8 bytes of data
+        /// </summary>
         public double f64()
         {
             ReadInternal(sizeof(double));
@@ -267,6 +337,9 @@ namespace RevEngGlue
             return BitConverter.ToDouble(swap, 0);
         }
 
+        /// <summary>
+        /// Read an array of double values
+        /// </summary>
         public double[] f64(int count)
         {
             var tmp = new double[count];
@@ -277,8 +350,10 @@ namespace RevEngGlue
             return tmp;
         }
 
-        // Bits
-
+        /// <summary>
+        /// Read a subset of bits from the next byte of data
+        /// Subsequent calls will use any remaining bits
+        /// </summary>
         public int b8(int count)
         {
             const int wb = sizeof(byte) * 8;
@@ -299,6 +374,10 @@ namespace RevEngGlue
             return val;
         }
 
+        /// <summary>
+        /// Read a subset of bits from the next 2 bytes of data
+        /// Subsequent calls will use any remaining bits
+        /// </summary>
         public int b16(int count)
         {
             const int wb = sizeof(short) * 8;
@@ -319,6 +398,10 @@ namespace RevEngGlue
             return val;
         }
 
+        /// <summary>
+        /// Read a subset of bits from the next 4 bytes of data
+        /// Subsequent calls will use any remaining bits
+        /// </summary>
         public int b32(int count)
         {
             const int wb = sizeof(int) * 8;
@@ -339,6 +422,9 @@ namespace RevEngGlue
             return val;
         }
 
+        /// <summary>
+        /// Read any remaining bits
+        /// </summary>
         public int bdiscard()
         {
             int final = 0;

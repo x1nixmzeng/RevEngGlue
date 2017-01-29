@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RevEngGlue
+﻿namespace RevEngGlue
 {
     namespace PrelenString
     {
+        /// <summary>
+        /// Definitions of supported string sizes
+        /// </summary>
         public enum Size
         {
             s8,
             s16,
         }
 
+        /// <summary>
+        /// Definitions of supported string alignment
+        /// </summary>
         public enum Align
         {
             a16,
@@ -21,6 +21,9 @@ namespace RevEngGlue
             aNone,
         }
 
+        /// <summary>
+        /// Definitions of supported string lengths, including leading fields
+        /// </summary>
         public enum Length
         {
             l8,
@@ -37,6 +40,9 @@ namespace RevEngGlue
             public Length length;
             public int read;
 
+            /// <summary>
+            /// Construct a new instance from a size
+            /// </summary>
             public PrelenStringParams(Size s)
             {
                 size = s;
@@ -45,6 +51,9 @@ namespace RevEngGlue
                 read = 0;
             }
 
+            /// <summary>
+            /// Construct a new instance from a size and fixed-length, with optional alignment
+            /// </summary>
             public PrelenStringParams(Size s, int len, Align a = Align.aNone)
             {
                 size = s;
@@ -53,6 +62,9 @@ namespace RevEngGlue
                 read = len;
             }
 
+            /// <summary>
+            /// Construct a new instance from a size and length, with optional alignment
+            /// </summary>
             public PrelenStringParams(Size s, Length l, Align a = Align.aNone)
             {
                 size = s;

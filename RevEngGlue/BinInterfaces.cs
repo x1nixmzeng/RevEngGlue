@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-
-namespace RevEngGlue
+﻿namespace RevEngGlue
 {
+    /// <summary>
+    /// Abstract interface for how signed values should be read
+    /// </summary>
     interface ISignedReads
     {
         sbyte i8();
@@ -16,6 +16,9 @@ namespace RevEngGlue
         long[] i64(int count);
     }
 
+    /// <summary>
+    /// Abstract interface for how signed values should be written
+    /// </summary>
     interface ISignedWrites
     {
         void i8(sbyte val);
@@ -24,6 +27,9 @@ namespace RevEngGlue
         void i64(long val);
     }
 
+    /// <summary>
+    /// Abstract interface for how unsigned values should be read
+    /// </summary>
     interface IUnsignedReads
     {
         byte u8();
@@ -37,6 +43,9 @@ namespace RevEngGlue
         ulong[] u64(int count);
     }
 
+    /// <summary>
+    /// Abstract interface for how float-point values should be read
+    /// </summary>
     interface IRealReads
     {
         float f32();
@@ -46,6 +55,9 @@ namespace RevEngGlue
         double[] f64(int count);
     }
 
+    /// <summary>
+    /// Abstract interface for how bits should be read
+    /// </summary>
     interface IBitReads
     {
         int b8(int count);

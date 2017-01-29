@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace RevEngGlue
 {
     namespace PrelenString
@@ -15,6 +12,9 @@ namespace RevEngGlue
             public int StringSize;
         }
 
+        /// <summary>
+        /// Abstract interface for how strings should be read
+        /// </summary>
         interface IPLStringReader
         {
             StringMeta cstr();

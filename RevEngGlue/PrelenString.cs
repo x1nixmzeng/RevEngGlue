@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RevEngGlue
 {
@@ -15,20 +14,32 @@ namespace RevEngGlue
         {
             BinReaderBase br;
 
+            /// <summary>
+            /// Property which defines how strings should be represented
+            /// </summary>
             public Encoding Encoding { get; set; }
 
+            /// <summary>
+            /// Construct a new instance from a reader
+            /// </summary>
             public PLStringReader(BinReaderBase reader)
             {
                 br = reader;
                 Encoding = Encoding.Default;
             }
 
+            /// <summary>
+            /// Construct a new instance from a reader and default encoding
+            /// </summary>
             public PLStringReader(BinReaderBase reader, Encoding enc)
             {
                 br = reader;
                 Encoding = enc;
             }
 
+            /// <summary>
+            /// #private Generate the metadata required to internally manipulate a string
+            /// </summary>
             private StringMeta GetMeta(PrelenStringParams p, List<byte> source)
             {
                 StringMeta meta;
@@ -55,7 +66,10 @@ namespace RevEngGlue
                 return meta;
             }
 
-            static void ToByteList(List<byte> result, ushort wchar)
+            /// <summary>
+            /// #private Copy a 16-bit character into a 8-bit list
+            /// </summary>
+            private static void ToByteList(List<byte> result, ushort wchar)
             {
                 var bytes = BitConverter.GetBytes(wchar);
 
@@ -63,7 +77,10 @@ namespace RevEngGlue
                 result.Add(bytes[1]);
             }
 
-            static void ToByteList(List<byte> result, ushort[] wstring)
+            /// <summary>
+            /// #private Copy an array of 16-bit characters into a 8-bit list
+            /// </summary>
+            private static void ToByteList(List<byte> result, ushort[] wstring)
             {
                 foreach (ushort val in wstring)
                 {
@@ -71,6 +88,9 @@ namespace RevEngGlue
                 }
             }
 
+            /// <summary>
+            /// #private Extract a string using a specific set of parameters
+            /// </summary>
             private StringMeta Read(PrelenStringParams p)
             {
                 var raw = new List<byte>();
@@ -170,6 +190,9 @@ namespace RevEngGlue
                 return GetMeta(p, raw);
             }
 
+            /// <summary>
+            /// Calculate the actual length of a string, given the encoding and metadata
+            /// </summary>
             public int StringLength(PrelenStringParams p, string source_string)
             {
                 int len = Encoding.GetByteCount(source_string);
@@ -184,26 +207,41 @@ namespace RevEngGlue
                 return len;
             }
 
+            /// <summary>
+            /// Read a null-terminated string of 8-bits
+            /// </summary>
             public StringMeta cstr()
             {
                 return Read(new PrelenStringParams(PrelenString.Size.s8, PrelenString.Length.lNul));
             }
 
+            /// <summary>
+            /// Read a null-terminated string of 16-bits
+            /// </summary>
             public StringMeta wcstr()
             {
                 return Read(new PrelenStringParams(PrelenString.Size.s16, PrelenString.Length.lNul));
             }
 
+            /// <summary>
+            /// Read a string of 8-bits with a known length
+            /// </summary>
             public StringMeta str(int length)
             {
                 return Read(new PrelenStringParams(PrelenString.Size.s8, length));
             }
 
+            /// <summary>
+            /// Read a string of 16-bits with a known length
+            /// </summary>
             public StringMeta wstr(int length)
             {
                 return Read(new PrelenStringParams(PrelenString.Size.s16, length));
             }
 
+            /// <summary>
+            /// Read a string using a specific set of parameters
+            /// </summary>
             public StringMeta pl(PrelenStringParams param)
             {
                 return Read(param);

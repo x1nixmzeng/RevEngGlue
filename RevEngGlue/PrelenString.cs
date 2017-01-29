@@ -55,6 +55,22 @@ namespace RevEngGlue
                 return meta;
             }
 
+            static void ToByteList(List<byte> result, ushort wchar)
+            {
+                var bytes = BitConverter.GetBytes(wchar);
+
+                result.Add(bytes[0]);
+                result.Add(bytes[1]);
+            }
+
+            static void ToByteList(List<byte> result, ushort[] wstring)
+            {
+                foreach (ushort val in wstring)
+                {
+                    ToByteList(result, val);
+                }
+            }
+
             private StringMeta Read(PrelenStringParams p)
             {
                 var raw = new List<byte>();
@@ -111,10 +127,7 @@ namespace RevEngGlue
                             {
                                 for (ushort val = br.u16(); val != 0; val = br.u16())
                                 {
-                                    var b = BitConverter.GetBytes(val);
-
-                                    raw.Add(b[0]);
-                                    raw.Add(b[1]);
+                                    ToByteList(raw, val);
                                 }
                             }
                             else
@@ -147,8 +160,8 @@ namespace RevEngGlue
                                     }
                                 }
 
-                                // 2 == sizeof(wchar_t)
-                                raw = br.u8((int)len * 2).ToList();
+                                var val = br.u16((int)len);
+                                ToByteList(raw, val);
                             }
                         }
                         break;
@@ -189,6 +202,11 @@ namespace RevEngGlue
             public StringMeta wstr(int length)
             {
                 return Read(new PrelenStringParams(PrelenString.Size.s16, length));
+            }
+
+            public StringMeta pl(PrelenStringParams param)
+            {
+                return Read(param);
             }
         }
     }

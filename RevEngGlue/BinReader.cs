@@ -40,5 +40,6 @@ namespace RevEngGlue
         public StringMeta wcstr() { return StrReader.wcstr(); }
         public StringMeta str(int length) { return StrReader.str(length); }
         public StringMeta wstr(int length) { return StrReader.wstr(length); }
+        public StringMeta pl(PrelenStringParams param) { return StrReader.pl(param); }
     }
 }

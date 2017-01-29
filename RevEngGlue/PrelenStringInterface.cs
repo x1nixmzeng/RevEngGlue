@@ -22,6 +22,8 @@ namespace RevEngGlue
 
             StringMeta str(int length);
             StringMeta wstr(int length);
+
+            StringMeta pl(PrelenStringParams param);
         }
     }
 }

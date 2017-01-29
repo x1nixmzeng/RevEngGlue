@@ -45,4 +45,13 @@ namespace RevEngGlue
         float[] f32(int count);
         double[] f64(int count);
     }
+
+    interface IBitReads
+    {
+        int b8(int count);
+        int b16(int count);
+        int b32(int count);
+
+        int bdiscard();
+    }
 }

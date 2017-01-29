@@ -13,16 +13,18 @@ namespace RevEngGlue
         EndianBig,
     }
 
-    public class BinReaderBase : ISignedReads, IUnsignedReads, IRealReads
+    public class BinReaderBase : ISignedReads, IUnsignedReads, IRealReads, IBitReads
     {
         Stream br;
         byte[] swap;
+        int available_bits;
         bool big_endian;
 
         public BinReaderBase(Stream source)
         {
             br = source;
             swap = new byte[10];
+            available_bits = 0;
             big_endian = false;
         }
 
@@ -86,9 +88,18 @@ namespace RevEngGlue
         {
             br.Read(swap, 0, num);
 
-            if( ( num > 1 ) && big_endian )
+            if ((num > 1) && big_endian)
             {
                 Array.Reverse(swap, 0, num);
+            }
+        }
+
+        private void ReadInternalBits(int num)
+        {
+            if (available_bits == 0)
+            {
+                ReadInternal(num / 8);
+                available_bits = num;
             }
         }
 
@@ -174,7 +185,7 @@ namespace RevEngGlue
             var tmp = new byte[count];
 
             br.Read(tmp, 0, count);
-            
+
             return tmp;
         }
 
@@ -263,6 +274,81 @@ namespace RevEngGlue
                 tmp[i] = f64();
             }
             return tmp;
+        }
+
+        // Bits
+
+        public int b8(int count)
+        {
+            const int wb = sizeof(byte) * 8;
+
+            count = Math.Min(wb, count);
+            ReadInternalBits(wb);
+
+            int val = swap[0];
+
+            int rem = (wb - available_bits);
+            val >>= rem;
+
+            available_bits = Math.Max(0, available_bits - count);
+
+            int mask = ~0 << count;
+            val &= ~mask;
+
+            return val;
+        }
+
+        public int b16(int count)
+        {
+            const int wb = sizeof(short) * 8;
+
+            count = Math.Min(wb, count);
+            ReadInternalBits(wb);
+
+            int val = BitConverter.ToInt16(swap, 0);
+
+            int rem = (wb - available_bits);
+            val >>= rem;
+
+            available_bits = Math.Max(0, available_bits - count);
+
+            int mask = ~0 << count;
+            val &= ~mask;
+
+            return val;
+        }
+
+        public int b32(int count)
+        {
+            const int wb = sizeof(int) * 8;
+
+            count = Math.Min(wb, count);
+            ReadInternalBits(wb);
+
+            int val = BitConverter.ToInt32(swap, 0);
+
+            int rem = (wb - available_bits);
+            val >>= rem;
+
+            available_bits = Math.Max(0, available_bits - count);
+
+            int mask = ~0 << count;
+            val &= ~mask;
+
+            return val;
+        }
+
+        public int bdiscard()
+        {
+            int final = 0;
+
+            if (available_bits > 0)
+            {
+                final = b32(available_bits);
+            }
+
+            available_bits = 0;
+            return final;
         }
     }
 }

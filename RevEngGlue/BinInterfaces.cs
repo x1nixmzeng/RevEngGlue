@@ -10,10 +10,10 @@
         int i32();
         long i64();
 
-        sbyte[] i8(int count);
-        short[] i16(int count);
-        int[] i32(int count);
-        long[] i64(int count);
+        sbyte[] i8(uint count);
+        short[] i16(uint count);
+        int[] i32(uint count);
+        long[] i64(uint count);
     }
 
     /// <summary>
@@ -37,10 +37,10 @@
         uint u32();
         ulong u64();
 
-        byte[] u8(int count);
-        ushort[] u16(int count);
-        uint[] u32(int count);
-        ulong[] u64(int count);
+        byte[] u8(uint count);
+        ushort[] u16(uint count);
+        uint[] u32(uint count);
+        ulong[] u64(uint count);
     }
 
     /// <summary>
@@ -51,8 +51,8 @@
         float f32();
         double f64();
 
-        float[] f32(int count);
-        double[] f64(int count);
+        float[] f32(uint count);
+        double[] f64(uint count);
     }
 
     /// <summary>
@@ -60,9 +60,9 @@
     /// </summary>
     interface IBitReads
     {
-        int b8(int count);
-        int b16(int count);
-        int b32(int count);
+        int b8(uint count);
+        int b16(uint count);
+        int b32(uint count);
 
         int bdiscard();
     }

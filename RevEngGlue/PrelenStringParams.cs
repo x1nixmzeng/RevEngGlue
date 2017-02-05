@@ -38,7 +38,7 @@
             public Size size;
             public Align align;
             public Length length;
-            public int read;
+            public uint read;
 
             /// <summary>
             /// Construct a new instance from a size
@@ -54,7 +54,7 @@
             /// <summary>
             /// Construct a new instance from a size and fixed-length, with optional alignment
             /// </summary>
-            public PrelenStringParams(Size s, int len, Align a = Align.aNone)
+            public PrelenStringParams(Size s, uint len, Align a = Align.aNone)
             {
                 size = s;
                 align = a;

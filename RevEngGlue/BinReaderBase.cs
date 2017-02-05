@@ -17,7 +17,7 @@ namespace RevEngGlue
     {
         Stream br;
         byte[] swap;
-        int available_bits;
+        uint available_bits;
         bool big_endian;
 
         public BinReaderBase(Stream source)
@@ -47,26 +47,37 @@ namespace RevEngGlue
         /// <summary>
         /// Get the size of the file
         /// </summary>
-        public int FileSize
+        public uint FileSize
         {
             get
             {
-                return (int)br.Length;
+                return (uint)(br.Length & 0xFFFFFFFF);
             }
         }
 
         /// <summary>
         /// Get the offset the file is being read from
         /// </summary>
-        public int Position
+        public uint Position
         {
             get
             {
-                return (int)br.Position;
+                return (uint)(br.Position & 0xFFFFFFFF);
             }
             set
             {
-                br.Position = (long)value;
+                br.Position = value;
+            }
+        }
+
+        /// <summary>
+        /// Get the number of bytes available to read from the current offset
+        /// </summary>
+        public uint Available
+        {
+            get
+            {
+                return FileSize - Position;
             }
         }
 
@@ -98,23 +109,35 @@ namespace RevEngGlue
         }
 
         /// <summary>
+        /// #private Check that a number of bytes can be read from the current position
+        /// </summary>
+        private void CanReadInternal(uint num)
+        {
+            if (num > Available)
+            {
+                throw new Exception(string.Format("Cannot read {0} byte(s) with only {1} remaining", num, Available));
+            }
+        }
+
+        /// <summary>
         /// #private Read a number of bytes into the internal swap cache, handling endian
         /// </summary>
-        private void ReadInternal(int num)
+        private void ReadInternal(uint num)
         {
-            br.Read(swap, 0, num);
+            CanReadInternal(num);
+            br.Read(swap, 0, (int)num);
             available_bits = 0;
 
             if ((num > 1) && big_endian)
             {
-                Array.Reverse(swap, 0, num);
+                Array.Reverse(swap, 0, (int)num);
             }
         }
 
         /// <summary>
         /// #private Read a number of bits, if required
         /// </summary>
-        private void ReadInternalBits(int num)
+        private void ReadInternalBits(uint num)
         {
             if (available_bits == 0)
             {
@@ -135,8 +158,9 @@ namespace RevEngGlue
         /// <summary>
         /// Read an array of signed 8-bit integer values
         /// </summary>
-        public sbyte[] i8(int count)
+        public sbyte[] i8(uint count)
         {
+            CanReadInternal(count * sizeof(sbyte));
             var tmp = new sbyte[count];
             for (int i = 0; i < count; ++i)
             {
@@ -158,8 +182,9 @@ namespace RevEngGlue
         /// <summary>
         /// Read an array of signed 16-bit integer values
         /// </summary>
-        public short[] i16(int count)
+        public short[] i16(uint count)
         {
+            CanReadInternal(count * sizeof(short));
             var tmp = new short[count];
             for (int i = 0; i < count; ++i)
             {
@@ -181,8 +206,9 @@ namespace RevEngGlue
         /// <summary>
         /// Read an array of signed 32-bit integer values
         /// </summary>
-        public int[] i32(int count)
+        public int[] i32(uint count)
         {
+            CanReadInternal(count * sizeof(int));
             var tmp = new int[count];
             for (int i = 0; i < count; ++i)
             {
@@ -204,8 +230,9 @@ namespace RevEngGlue
         /// <summary>
         /// Read an array of signed 64-bit integer values
         /// </summary>
-        public long[] i64(int count)
+        public long[] i64(uint count)
         {
+            CanReadInternal(count * sizeof(long));
             var tmp = new long[count];
             for (int i = 0; i < count; ++i)
             {
@@ -226,11 +253,12 @@ namespace RevEngGlue
         /// <summary>
         /// Read an array of unsigned 8-bit integer values
         /// </summary>
-        public byte[] u8(int count)
+        public byte[] u8(uint count)
         {
+            CanReadInternal(count * sizeof(byte));
             var tmp = new byte[count];
 
-            br.Read(tmp, 0, count);
+            br.Read(tmp, 0, (int)count);
 
             return tmp;
         }
@@ -248,8 +276,9 @@ namespace RevEngGlue
         /// <summary>
         /// Read an array of unsigned 16-bit integer values
         /// </summary>
-        public ushort[] u16(int count)
+        public ushort[] u16(uint count)
         {
+            CanReadInternal(count * sizeof(ushort));
             var tmp = new ushort[count];
             for (int i = 0; i < count; ++i)
             {
@@ -271,8 +300,9 @@ namespace RevEngGlue
         /// <summary>
         /// Read an array of unsigned 32-bit integer values
         /// </summary>
-        public uint[] u32(int count)
+        public uint[] u32(uint count)
         {
+            CanReadInternal(count * sizeof(uint));
             var tmp = new uint[count];
             for (int i = 0; i < count; ++i)
             {
@@ -294,8 +324,9 @@ namespace RevEngGlue
         /// <summary>
         /// Read an array of unsigned 64-bit integer values
         /// </summary>
-        public ulong[] u64(int count)
+        public ulong[] u64(uint count)
         {
+            CanReadInternal(count * sizeof(ulong));
             var tmp = new ulong[count];
             for (int i = 0; i < count; ++i)
             {
@@ -317,8 +348,9 @@ namespace RevEngGlue
         /// <summary>
         /// Read an array of float values
         /// </summary>
-        public float[] f32(int count)
+        public float[] f32(uint count)
         {
+            CanReadInternal(count * sizeof(float));
             var tmp = new float[count];
             for (int i = 0; i < count; ++i)
             {
@@ -340,8 +372,9 @@ namespace RevEngGlue
         /// <summary>
         /// Read an array of double values
         /// </summary>
-        public double[] f64(int count)
+        public double[] f64(uint count)
         {
+            CanReadInternal(count * sizeof(double));
             var tmp = new double[count];
             for (int i = 0; i < count; ++i)
             {
@@ -354,7 +387,7 @@ namespace RevEngGlue
         /// Read a subset of bits from the next byte of data
         /// Subsequent calls will use any remaining bits
         /// </summary>
-        public int b8(int count)
+        public int b8(uint count)
         {
             const int wb = sizeof(byte) * 8;
 
@@ -363,12 +396,12 @@ namespace RevEngGlue
 
             int val = swap[0];
 
-            int rem = (wb - available_bits);
+            int rem = (wb - (int)available_bits);
             val >>= rem;
 
             available_bits = Math.Max(0, available_bits - count);
 
-            int mask = ~0 << count;
+            int mask = ~0 << (int)count;
             val &= ~mask;
 
             return val;
@@ -378,7 +411,7 @@ namespace RevEngGlue
         /// Read a subset of bits from the next 2 bytes of data
         /// Subsequent calls will use any remaining bits
         /// </summary>
-        public int b16(int count)
+        public int b16(uint count)
         {
             const int wb = sizeof(short) * 8;
 
@@ -387,12 +420,12 @@ namespace RevEngGlue
 
             int val = BitConverter.ToInt16(swap, 0);
 
-            int rem = (wb - available_bits);
+            int rem = (wb - (int)available_bits);
             val >>= rem;
 
             available_bits = Math.Max(0, available_bits - count);
 
-            int mask = ~0 << count;
+            int mask = ~0 << (int)count;
             val &= ~mask;
 
             return val;
@@ -402,7 +435,7 @@ namespace RevEngGlue
         /// Read a subset of bits from the next 4 bytes of data
         /// Subsequent calls will use any remaining bits
         /// </summary>
-        public int b32(int count)
+        public int b32(uint count)
         {
             const int wb = sizeof(int) * 8;
 
@@ -411,12 +444,12 @@ namespace RevEngGlue
 
             int val = BitConverter.ToInt32(swap, 0);
 
-            int rem = (wb - available_bits);
+            int rem = (wb - (int)available_bits);
             val >>= rem;
 
             available_bits = Math.Max(0, available_bits - count);
 
-            int mask = ~0 << count;
+            int mask = ~0 << (int)count;
             val &= ~mask;
 
             return val;

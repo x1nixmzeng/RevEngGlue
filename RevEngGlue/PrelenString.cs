@@ -45,9 +45,9 @@ namespace RevEngGlue
                 StringMeta meta;
 
                 meta.String = Encoding.GetString(source.ToArray());
-                meta.StringLength = meta.String.Length;
+                meta.StringLength = (uint)meta.String.Length;
 
-                meta.StringSize = source.Count;
+                meta.StringSize = (uint)source.Count;
 
                 // Add nul-terminator size to read string size
                 if (p.length == Length.lNul)
@@ -112,7 +112,7 @@ namespace RevEngGlue
 
                                 if (p.length == Length.lFixed)
                                 {
-                                    len = (uint)p.read;
+                                    len = p.read;
                                 }
                                 else
                                 {
@@ -136,7 +136,7 @@ namespace RevEngGlue
                                     }
                                 }
 
-                                raw = br.u8((int)len).ToList();
+                                raw = br.u8(len).ToList();
                             }
                         }
                         break;
@@ -156,7 +156,7 @@ namespace RevEngGlue
 
                                 if (p.length == Length.lFixed)
                                 {
-                                    len = (uint)p.read;
+                                    len = p.read;
                                 }
                                 else
                                 {
@@ -180,7 +180,7 @@ namespace RevEngGlue
                                     }
                                 }
 
-                                var val = br.u16((int)len);
+                                var val = br.u16(len);
                                 ToByteList(raw, val);
                             }
                         }
@@ -226,7 +226,7 @@ namespace RevEngGlue
             /// <summary>
             /// Read a string of 8-bits with a known length
             /// </summary>
-            public StringMeta str(int length)
+            public StringMeta str(uint length)
             {
                 return Read(new PrelenStringParams(PrelenString.Size.s8, length));
             }
@@ -234,7 +234,7 @@ namespace RevEngGlue
             /// <summary>
             /// Read a string of 16-bits with a known length
             /// </summary>
-            public StringMeta wstr(int length)
+            public StringMeta wstr(uint length)
             {
                 return Read(new PrelenStringParams(PrelenString.Size.s16, length));
             }

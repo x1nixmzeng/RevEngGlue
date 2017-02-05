@@ -66,12 +66,12 @@ namespace RevEngGlue
         /// <summary>
         /// Read a string of 8-bits with a known length
         /// </summary>
-        public StringMeta str(int length) { return StrReader.str(length); }
+        public StringMeta str(uint length) { return StrReader.str(length); }
 
         /// <summary>
         /// Read a string of 16-bits with a known length
         /// </summary>
-        public StringMeta wstr(int length) { return StrReader.wstr(length); }
+        public StringMeta wstr(uint length) { return StrReader.wstr(length); }
 
         /// <summary>
         /// Read a string using a specific set of parameters

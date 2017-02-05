@@ -8,8 +8,8 @@ namespace RevEngGlue
         public struct StringMeta
         {
             public string String;
-            public int StringLength;
-            public int StringSize;
+            public uint StringLength;
+            public uint StringSize;
         }
 
         /// <summary>
@@ -20,8 +20,8 @@ namespace RevEngGlue
             StringMeta cstr();
             StringMeta wcstr();
 
-            StringMeta str(int length);
-            StringMeta wstr(int length);
+            StringMeta str(uint length);
+            StringMeta wstr(uint length);
 
             StringMeta pl(PrelenStringParams param);
         }
